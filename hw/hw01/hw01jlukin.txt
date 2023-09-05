@@ -1,0 +1,22 @@
+B481 / Fall 2023 / Homework 01 / Jonah Lukin (jlukin)
+
+Question B:
+
+Fahrenheit Interpolation: F(t) = 32(1-t) + 212(t) ---- When t = 0, F(t) = 32 "Freezing Point" ---- When t = 1, F(t) = 212 "Boiling Point"
+
+Celsius Interpolation: C(t) = 100(t) ---- When t = 0, C(t) = 0 "Freezing Point" ---- When t = 1. C(t) = 100 "Boiling Point"
+
+
+
+Question C:
+
+The graphics pipline tries to rely on the most basic shape possible. With Lat and Long lines, 
+the majority of polygons will be Quadrilateral, with the ones touching the poles being triangles. 
+It would be possible to use all triangles if you introduced lines other than vertical and horizontal.
+
+
+
+Question D:
+
+Primitive assembly combines vertex information, ie connections, color, position. 
+Projection operations, clipping and culling occur in the assembly - Rasterization follows.
