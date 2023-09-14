@@ -1,0 +1,48 @@
+B481 / Fall 2023 -- Jonah Lukin (jlukin) -- HW02
+
+
+
+Part B
+
+1) if slope of line[(x1,y1), (x2,y2)] is the same slope as line[(x2,y2), (x3,y3)]
+	then is collinear
+	
+
+   if((y3 - y2) * (x2 - x1) == (y2 - y1) * (x3 - x2))
+	return true;
+   return false;
+	
+
+2) Graphics APIs don't provide scalars, vectors, and points as primitives because it is inefficient to process nonplanar vertices, 
+thus unnecessary to allocate a type them. This also means the smallest primitive should be a triangle or polygon, because that is a displayable shape to render.
+
+
+
+
+Part C
+
+1) y = mx + b
+
+
+2) (y0) = m(x0) + b
+
+
+
+
+Part D
+
+1) 
+
+a)
+
+	[cos(-75) -sin(-75) 0]
+	[sin(-75) cos(-75) 0]		
+	[0 	  0 	   1]
+
+b)
+	[1 0 3]	   [4 0 3]	  [4cos(80)  0(-sin(80))  3]
+	[0 1 2] -> [0 3 2]   ->   [0sin(80)  3cos(80)     2]
+	[0 0 1]	   [0 0 1]	  [0 	     0 	          1]	 
+	
+
+2) S(0.4,0.2) -> T(-x0, -y0) -> R(-45deg) -> T(x0, y0) (Scale, move to origin, rotate, move back to initial points)
