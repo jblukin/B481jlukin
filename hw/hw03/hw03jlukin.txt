@@ -1,0 +1,40 @@
+B481 / Fall 2023 -- Jonah Lukin (jlukin) -- HW 03
+
+Part B
+
+1) 16, there are 4 control points for a cubic spline with 4 coordinate values each. 4 * (x, y, z, 1) = 16 total scalars
+
+
+2) a) 2nd Derivative
+
+b) The vertices would be numbered: (0,1,2,3) for the first Spline and (3,4,5,6) for the second Spline, since the first and last points of Beziers are part of the curve. There is no guarantee of a derivative matching automatically, it must be deliberately done with Beziers.
+
+c) The vertices would be numbered: (0,1,2,3) for the first Spline and (2,3,4,5) for the second Spline, since only the second and third control points are part of the curve. The highest derivative automatically matched would be the 1st derivative.
+
+
+3) Lerp(P0, P1, t) = (1 - t)P0 + P1(t) resulted to L1
+   Lerp(P1, P2, t) = (1 - t)P1 + P2(t) resulted to L2
+
+   Lerp(L1, L2, t) = (1 - t)L1 + L2(t) = (1 - t)*( (1 - t)P0 + P1(t) ) + ( (1 - t)P1 + P2(t) )*(t)
+	= P0 + 2(t)(P1) + (t^2)(P1) - 2(t^2)(P1) + (t^2)(P2) - 2(t)(P0)
+
+Part C
+
+Mbez = [(-1, 3, -3, 1), (3, -6, 3, 0), (-3, 3, 0, 0), (1, 0, 0, 0)]
+
+Mbez * [t^3, t^2, t, 1]^T = 
+[{(-t^3) + 3(t^2) - 3(t) + 1}, {3(t^3) - 6(t^2) + 3(t)}, {-3(t^3) + 3(t^2)}, {t^3}]
+
+[P0, P1, P2, P3] 
+* 
+[{(-t^3) + 3(t^2) - 3(t) + 1}, {3(t^3) - 6(t^2) + 3(t)}, {-3(t^3) + 3(t^2)}, {t^3}]
+
+= (P0 * ((-t^3) + 3(t^2) - 3(t) + 1)) + (P1 * (3(t^3) - 6(t^2) + 3(t)))
+	+ (P2 * (-3(t^3) + 3(t^2))) + (P3 * (t^3))
+
+= P0(-t^3) + 3(P0)(t^2) - 3(P0)(t) + P0 + 3(P1)(t^3) - 6(P1)(t^2) + 3(P1)(t)
+	- 3(P2)(t^3) + 3(P2)(t^2) + P3(t^3)
+
+= (P0)(1-t)^3 + (P1)(3)(t)(1-t)^2 + (P2)(3)(t^2)(1-t) + P3(t^3)
+
+			      
