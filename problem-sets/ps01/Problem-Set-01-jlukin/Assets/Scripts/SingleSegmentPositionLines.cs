@@ -5,9 +5,10 @@
     Original demo code by CSCI-B481 alumnus Rajin Shankar, IU Computer Science.
  */
 
+using PS01;
 using UnityEngine;
 
-namespace PS01 {
+namespace PS1 {
 
     public class SingleSegmentPositionLines : MonoBehaviour {
 
@@ -31,7 +32,7 @@ namespace PS01 {
             // set positions for connecting line vertices:
 
             // TODO - uncomment when .ClosestPointOnSegment is implemented:
-           Vector2 lClosestPoint = LineUtility.ClosestPointOnSegment(
+           Vector2 lClosestPoint = PS01.LineUtility.ClosestPointOnSegment(
                subjectLineStartTransform.position,
                subjectLineEndTransform.position,
                subjectPointTransform.position);

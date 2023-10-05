@@ -77,7 +77,7 @@ namespace PS01 {
              } else {
                  return start + (end - start) * localX;
              }
-        } // end of ClosestPointOnSegment()
+        } // end of ClosestPointOnSegement()
 
 
 
@@ -93,7 +93,7 @@ namespace PS01 {
         //
         // Note:
         //   Polygon given as array of vertices with vertex[n-1] connecting back to vertex[0]
-        public static Vector2 ClosestPointOnPolygon(Vector2[] polygonPoints, Vector2 point) {
+       /* public static Vector2 ClosestPointOnPolygon(Vector2[] polygonPoints, Vector2 point) {
             Vector2 result = Vector2.zero;
             float minSqrDistance = float.PositiveInfinity;
             for (int i = 0; i < polygonPoints.Length; i++) {
@@ -130,7 +130,7 @@ namespace PS01 {
                 }
             }
             return result;
-        } // end of ClosestPointOnPolygon()
+        } // end of ClosestPointOnPolygon()*/
 
 
         // // ClosestPointOnPolygon() --- returns the closest point (on a polygon)
@@ -139,42 +139,48 @@ namespace PS01 {
         // //      the polygon is given as array of transforms
         // //      with vertex[n-1] connecting back to vertex[0]
         // //
-        // public static Vector2 ClosestPointOnPolygon(Transform[] polygonVertices, Vector2 point) {
+         public static Vector2 ClosestPointOnPolygon(Transform[] polygonPoints, Vector2 subjectPoint) {
         
-        //     Vector2 result = Vector2.zero;
-        //     float minSqrDistance = float.PositiveInfinity;
+             Vector2 result = Vector2.zero;
+             float minSqrDistance = float.PositiveInfinity;
             
-        //     for (int i = 0; i < polygonVertices.Length; i++) {
-        //         int j = (i + 1) % polygonVertices.Length;
-        //         Vector2 side = polygonVertices[j].position - polygonVertices[i].position;
-        //         float sideLength = side.magnitude;
-        //         Vector2 sideDirection = side / sideLength;
+             for (int i = 0; i < polygonPoints.Length; i++) {
+                 
+                int j = (i + 1) % polygonPoints.Length;
+                Vector2 side = polygonPoints[j].position - polygonPoints[i].position;
+                float sideLength = side.magnitude;
+                Vector2 sideDirection = side / sideLength;
 
-        //     // TODO: 
-        //     //  you may find useful the utility methods at the top of this file, once you complete them...
+             // TODO: 
+             //  you may find useful the utility methods at the top of this file, once you complete them...
 
-        //         Vector2 pointOnPolygon;
-        //     //    if (localX < 0) {
-        //     //        pointOnPolygon = ...
-        //     //    } else if (localX > sideLength) {
-        //     //        pointOnPolygon = ...
-        //     //    } else {
-        //     //        pointOnPolygon = ...
-        //     //    }
+                Vector2 pointOnPolygon;
+                Vector2 pointA = polygonPoints[i].position;
+                Vector2 pointB = polygonPoints[j].position;
 
-        //     // TODO:
-        //     //  the following code works, as long as you computed pointOnPolygon correctly.
-        //     //  It will be useful to understand what the following lines do:
-        //         Vector2 delta = point - pointOnPolygon;
-        //         float sqrDistance = delta.sqrMagnitude;
+                float localX = Mathf.Clamp(Vector2.Dot(subjectPoint - pointA, sideDirection), 0f, sideLength);
 
-        //         if (sqrDistance < minSqrDistance) {
-        //             result = pointOnPolygon;
-        //             minSqrDistance = sqrDistance;
-        //         }
-        //     }
-        //     return result;
-        // } // end of ClosestPointOnPolygon()
+                if (localX <= 0) {
+                    pointOnPolygon = pointA;
+                 } else if (localX >= sideLength) {
+                    pointOnPolygon = pointB;
+                 } else {
+                    pointOnPolygon = ClosestPointOnSegment(pointA, pointB, subjectPoint);
+                }
+
+             // TODO:
+             //  the following code works, as long as you computed pointOnPolygon correctly.
+             //  It will be useful to understand what the following lines do:
+                 Vector2 delta = subjectPoint - pointOnPolygon;
+                 float sqrDistance = delta.sqrMagnitude;
+
+                 if (sqrDistance < minSqrDistance) {
+                     result = pointOnPolygon;
+                     minSqrDistance = sqrDistance;
+                 }
+             }
+             return result;
+         } // end of ClosestPointOnPolygon()
 
 
     } // end of static class LineUtility
