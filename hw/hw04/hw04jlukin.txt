@@ -1,0 +1,55 @@
+B481 / Fall 2023 -- Jonah Lukin (jlukin) -- HW 04
+
+Part B
+
+1) 
+
+a)
+
+A = (P2 - P1) = ( x2 - x1, y2 - y1, z2 - z1 )
+
+B = (P3 - P2) = ( x3 - x2, y3 - y2, z3 - z2 )
+
+Amag = (sqrt(x2 - x1) + sqrt(y2 - y1) + sqrt(z2 - z1))
+
+Bmag = (sqrt(x3 - x2) + sqrt(y3 - y2) + sqrt(z3 - z2))
+
+angle = acos( (Ax * Bx) + (Ay * By) / (Amag * Bmag) )
+
+A X B = Amag * Bmag * sin(angle)
+
+b) [(P2 - P1) X (P3 - P2)], [(P2 - P1) X (P1 - P3)], [(P3 - P2) X (P1 - P3)],
+   -[(P3 - P2) X (P2 - P1)], -[(P1 - P3) X (P2 - P1)], -[(P1 - P3) X (P3 - P2)]
+
+
+2) n = (-dy, dx)
+
+
+Part C
+
+1) [cos(x), 0, sin(x), 0]
+      [0,     1,    0,    0]
+      [-sin(x), 0, cos(x), 0]
+      [0,      0,   0,     1]
+
+
+2) [cos(x), -sin(x), 0, 0]
+      [sin(x), cos(x),   0, 0]
+      [0,        0,      1, 0]
+      [0,        0,      0, 1]
+
+
+3) (1, 1, 1) - (1, 1, 0) = (0, 0, 1) -- Z-axis
+      [cos(x), -sin(x), 0, 0]
+      [sin(x), cos(x),   0, 0]
+      [0,        0,      1, 0]
+      [0,        0,      0, 1]
+
+
+4) [cos(y) * cos(z), cos(y) * sin(z), -sin(y), 0]
+    [sin(x) * sin(y) * cos(z) - cos(x) * sin(z), sin(x) * sin(y) * sin(z) + cos(x) * sin(z),  sin(x) * cos(y), 0]
+    [cos(x) * sin(y) * sin(z) + sin(x) * sin(z), cos(x) * sin(y) * sin(z) - sin(x) * cos(z), cos(x) * cos(y), 0]
+    [0,        0,      0,  1]
+
+
+5) No, you must rotate before translating to guarantee that the point is rotated properly around it ideal origin.
