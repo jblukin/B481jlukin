@@ -1,14 +1,16 @@
 /*  CSCI-B481/B581 - Fall 2023 - Mitja Hmeljak
-    Problem Set 03 starter C# program code
-    This script needs to:
-    prepare a meshRenderer and connect it to a Material.
-    The Material will be implemented in a Vertex Shader,
-    to calculate (on the GPU) the vertices on a single Spline Curve segment,
-    to be displayed as a Mesh, using a Mesh Renderer.
-    Original demo code by CSCI-B481 alumnus Rajin Shankar, IU Computer Science.
+	Problem Set 03 starter C# program code
+	This script needs to:
+	prepare a meshRenderer and connect it to a Material.
+	The Material will be implemented in a Vertex Shader,
+	to calculate (on the GPU) the vertices on a single Spline Curve segment,
+	to be displayed as a Mesh, using a Mesh Renderer.
+	Original demo code by CSCI-B481 alumnus Rajin Shankar, IU Computer Science.
  */
 
 using System.Net;
+using Unity.Collections;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor.Search;
 using UnityEngine;
@@ -57,6 +59,8 @@ public class SplineSegmentGPUCompute : MonoBehaviour
 
     private bool _showDerivatives;
 
+    [SerializeField, Range(5, 10)] private int derivativeLineLength;
+
     public void SetType(SplineParameters.SplineType type)
     {
         splineType = type;
@@ -69,6 +73,8 @@ public class SplineSegmentGPUCompute : MonoBehaviour
     public void UseB() => SetType(SplineParameters.SplineType.Bspline);
 
     public void DerivativesToggle() => _showDerivatives = !_showDerivatives;
+
+    [SerializeField] private LineRenderer control0First, control0Second, control1First, control1Second, control2First, control2Second, control3First, control3Second;
 
     // ---------------------------------------------------------
     // set up the renderer, the first time this object is instantiated in the scene:
@@ -174,28 +180,235 @@ public class SplineSegmentGPUCompute : MonoBehaviour
         controlPolyLine.SetPosition(2, control2.position);
         controlPolyLine.SetPosition(3, control3.position);
 
-
-        if (_showDerivatives)
-            ShowDerivatives();
+        ShowDerivatives();
 
     } // end of Update()
 
     private void ShowDerivatives()
     {
 
-        if (splineType is SplineParameters.SplineType.Bezier) { }
-        //Use Control points to calc derivative
-        //B'(t) = 2(1-t)(P1-P0) + 2t(P2-P1)
-        //B''(t) =
-        else if (splineType is SplineParameters.SplineType.CatmullRom) { }
-        //Use Control points to calc derivative
-        //p'(t) = (6t� - 6t)p0 + (3t� - 4t + 1)m0 + (-6t� + 6t)p1 + (3t� - 2t)m1
-        //p''(t) = (12t - 6)p0 + (6t - 4)m0 + (-12t + 6)p1 + (6t - 2)m1
-        else if (splineType is SplineParameters.SplineType.Bspline) { }
-        //Use Control points to calc derivative
-        //First is same as Catmull
+        //float t = control.position.x; //according to the shader
+
+        control0First.enabled = _showDerivatives;
+        control0Second.enabled = _showDerivatives;
+        control1First.enabled = _showDerivatives;
+        control1Second.enabled = _showDerivatives;
+        control2First.enabled = _showDerivatives;
+        control2Second.enabled = _showDerivatives;
+        control3First.enabled = _showDerivatives;
+        control3Second.enabled = _showDerivatives;
+
+        if (splineType is SplineParameters.SplineType.Bezier)
+        {
+            //FIRST CONTROL POINT
+
+            float control0_t = 0;
+
+            Vector3 control0firstD = 3f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * Mathf.Pow(control0_t, 2)
+                + (2f * control2.position - 4f * control1.position + 2f * control0.position) * control0_t + control1.position - control0.position);
+
+            control0First.SetPosition(0, control0.position);
+
+            control0First.SetPosition(1, control0.position + control0firstD.normalized * derivativeLineLength);
+
+            Vector3 control0SecondD = 6f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * control0_t
+                + control2.position - 2f * control1.position + control0.position);
+
+            control0Second.SetPosition(0, control0.position);
+
+            control0Second.SetPosition(1, control0.position + control0SecondD.normalized * derivativeLineLength);
+
+            //END FIRST CONTROL POINT
+
+            //SECOND CONTROL POINT
+
+            float control1_t = 1 / 3f;
+
+            Vector3 control1firstD = 3f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * Mathf.Pow(control1_t, 2)
+                + (2f * control2.position - 4f * control1.position + 2f * control0.position) * control1_t + control1.position - control0.position);
+
+            control1First.SetPosition(0, control1.position);
+
+            control1First.SetPosition(1, control1.position + control1firstD.normalized * derivativeLineLength);
+
+            Vector3 control1SecondD = 6f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * control1_t
+                + control2.position - 2f * control1.position + control0.position);
+
+            control1Second.SetPosition(0, control1.position);
+
+            control1Second.SetPosition(1, control1.position + control1SecondD.normalized * derivativeLineLength);
+
+            //END SECOND CONTROL POINT
+
+            //THIRD CONTROL POINT
+
+            float control2_t = 2 / 3f;
+
+            Vector3 control2firstD = 3f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * Mathf.Pow(control2_t, 2)
+                + (2f * control2.position - 4f * control1.position + 2f * control0.position) * control2_t + control1.position - control0.position);
+
+            control2First.SetPosition(0, control2.position);
+
+            control2First.SetPosition(1, control2.position + control2firstD.normalized * derivativeLineLength);
+
+            Vector3 control2SecondD = 6f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * control2_t
+                + control2.position - 2f * control1.position + control0.position);
+
+            control2Second.SetPosition(0, control2.position);
+
+            control2Second.SetPosition(1, control2.position + control2SecondD.normalized * derivativeLineLength);
+
+            //END THIRD CONTROL POINT
+
+            //FOURTH CONTROL POINT
+
+            float control3_t = 1;
+
+            Vector3 control3firstD = 3f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * Mathf.Pow(control3_t, 2)
+                + (2f * control2.position - 4f * control1.position + 2f * control0.position) * control3_t + control1.position - control0.position);
+
+            control3First.SetPosition(0, control3.position);
+
+            control3First.SetPosition(1, control3.position + control3firstD.normalized * derivativeLineLength);
+
+            Vector3 control3SecondD = 6f * ((control3.position - 3f * control2.position + 3f * control1.position - control0.position) * control3_t
+                + control2.position - 2f * control1.position + control0.position);
+
+            control3Second.SetPosition(0, control3.position);
+
+            control3Second.SetPosition(1, control3.position + control3SecondD.normalized * derivativeLineLength);
+
+            //END FOURTH CONTROL POINT
+
+        }
+
+        else if (splineType is SplineParameters.SplineType.CatmullRom) 
+        {
+
+            //FIRST CONTROL POINT - NO DERIVATIVES HERE (NOT PART OF CURVE)
+
+            control0First.enabled = false;
+
+            control0Second.enabled = false;
+
+            //END FIRST CONTROL POINT
 
 
+            //SECOND CONTROL POINT
+
+            float control1_t = 0;
+
+            Vector3 control1firstD = 0.5f * (3f * Mathf.Pow(control1_t, 2) * (control3.position - 3f * control2.position + 3f * control1.position - control0.position)
+                + (2f * control1_t * (-control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position))
+                + control2.position - control0.position);
+
+            control1First.SetPosition(0, control1.position);
+
+            control1First.SetPosition(1, control1.position + control1firstD.normalized * derivativeLineLength);
+
+            Vector3 control1SecondD = (3f * control1_t * (control3.position - 9f * control2.position + 9f * control1.position - 3f * control0.position)
+                - (control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position));
+
+            control1Second.SetPosition(0, control1.position);
+
+            control1Second.SetPosition(1, control1.position + control1SecondD.normalized * derivativeLineLength);
+
+            //END SECOND CONTROL POINT
+
+            //THIRD CONTROL POINT
+
+            float control2_t = 1;
+
+            Vector3 control2firstD = 0.5f * (3f * Mathf.Pow(control2_t, 2) * (control3.position - 3f * control2.position + 3f * control1.position - control0.position)
+                + (2f * control2_t * (-control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position))
+                + control2.position - control0.position);
+
+            control2First.SetPosition(0, control2.position);
+
+            control2First.SetPosition(1, control2.position + control2firstD.normalized * derivativeLineLength);
+
+            Vector3 control2SecondD = (control2_t * ((3f * control3.position) - (9f * control2.position) + (9f * control1.position) - (3f * control0.position))
+                + (-control3.position + (4f * control2.position) - (5f * control1.position) + (2f * control0.position)));
+
+            control2Second.SetPosition(0, control2.position);
+
+            control2Second.SetPosition(1, control2.position + control2SecondD.normalized * derivativeLineLength);
+
+            //END THIRD CONTROL POINT
+
+            //FOURTH CONTROL POINT - NO DERIVATIVES HERE (NOT PART OF CURVE)
+
+            control3First.enabled = false;
+
+            control3Second.enabled = false;
+
+            //END FOURTH CONTROL POINT
+
+
+        }
+
+        else if (splineType is SplineParameters.SplineType.Bspline) 
+        {
+
+            //FIRST CONTROL POINT
+
+            control0First.enabled = false;
+
+            control0Second.enabled = false;
+
+            //END FIRST CONTROL POINT
+
+            //FIRST POINT DERIVATIVES - USES CONTROL POINT 1 LINE RENDERERS
+
+            float splineStart_t = 0;
+
+            Vector3 startPosFirstD = 0.5f * (3f * Mathf.Pow(splineStart_t, 2) * (control3.position - 3f * control2.position + 3f * control1.position - control0.position)
+                + (2f * splineStart_t * (-control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position))
+                + control2.position - control0.position);
+
+            control1First.SetPosition(0, control1.position);
+
+            control1First.SetPosition(1, control1.position + startPosFirstD.normalized * derivativeLineLength);
+
+            Vector3 startPosSecondD = (3f * splineStart_t * (control3.position - 9f * control2.position + 9f * control1.position - 3f * control0.position)
+                + (-control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position));
+
+            control1Second.SetPosition(0, control1.position);
+
+            control1Second.SetPosition(1, control1.position + startPosSecondD.normalized * derivativeLineLength);
+
+            //END FIRST POINT DERIVATIVES
+
+            //LAST POINT DERIVATIVES - USES CONTROL POINT 2 LINE RENDERERS
+
+            float splineEnd_t = 1;
+
+            Vector3 endPosFirstD = 0.5f * (3f * Mathf.Pow(splineEnd_t, 2) * (control3.position - 3f * control2.position + 3f * control1.position - control0.position)
+                + (2f * splineEnd_t * (-control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position))
+                + control2.position - control0.position);
+
+            control2First.SetPosition(0, control2.position);
+
+            control2First.SetPosition(1, control2.position + endPosFirstD.normalized * derivativeLineLength);
+
+            Vector3 endPosSecondD = (3f * splineEnd_t * (control3.position - 9f * control2.position + 9f * control1.position - 3f * control0.position)
+                - (control3.position + 4f * control2.position - 5f * control1.position + 2f * control0.position));
+
+            control2Second.SetPosition(0, control2.position);
+
+            control2Second.SetPosition(1, control2.position + endPosSecondD.normalized * derivativeLineLength);
+
+            //END LAST POINT DERIVATIVES
+
+            //FOURTH CONTROL POINT
+
+            control3First.enabled = false;
+
+            control3Second.enabled = false;
+
+            //END FOURTH CONTROL POINT
+
+        }
 
     }
 
