@@ -4,78 +4,93 @@ using UnityEngine;
 
 public class CreateCube : MonoBehaviour
 {
-    void MakeCube(Vector3 offset, Vector3 size)
-    {
 
-        Vector3[] vertices = {
-        new Vector3 (0, 0, 0),
-        new Vector3 (1, 0, 0),
-        new Vector3 (1, 1, 0),
-        new Vector3 (0, 1, 0),
-        new Vector3 (0, 1, 1),
-        new Vector3 (1, 1, 1),
-        new Vector3 (1, 0, 1),
-        new Vector3 (0, 0, 1),
-    };
-
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            vertices[i].Scale(size);
-            vertices[i] += offset;
-        }
-
-        int[] triangles = {
-        0, 2, 1, //face front
-		0, 3, 2,
-        2, 3, 4, //face top
-		2, 4, 5,
-        1, 2, 5, //face right
-		1, 5, 6,
-        0, 7, 4, //face left
-		0, 4, 3,
-        5, 4, 7, //face back
-		5, 7, 6,
-        0, 6, 7, //face bottom
-		0, 1, 6
-    };
-
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
-
-        mesh.Clear();
-
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-
-        mesh.RecalculateNormals();
-    }
+    public Material material;
 
     void MakeCube()
     {
 
         Vector3[] vertices = {
-        new Vector3 (0, 0, 0),
-        new Vector3 (1, 0, 0),
-        new Vector3 (1, 1, 0),
-        new Vector3 (0, 1, 0),
-        new Vector3 (0, 1, 1),
-        new Vector3 (1, 1, 1),
-        new Vector3 (1, 0, 1),
-        new Vector3 (0, 0, 1),
+        new Vector3 (0.5f, -0.5f, 0.5f),
+        new Vector3 (-0.5f, -0.5f, 0.5f),
+        new Vector3 (0.5f, 0.5f, 0.5f),
+        new Vector3 (-0.5f, 0.5f, 0.5f),
+        new Vector3 (0.5f, 0.5f, -0.5f),
+        new Vector3 (-0.5f, 0.5f, -0.5f),
+        new Vector3 (0.5f, -0.5f, -0.5f),
+        new Vector3 (-0.5f, -0.5f, -0.5f),
+        new Vector3 (0.5f, 0.5f, 0.5f),
+        new Vector3 (-0.5f, 0.5f, 0.5f),
+        new Vector3 (0.5f, 0.5f, -0.5f),
+        new Vector3 (-0.5f, 0.5f, -0.5f),
+        new Vector3 (0.5f, -0.5f, -0.5f),
+        new Vector3 (0.5f, -0.5f, 0.5f),
+        new Vector3 (-0.5f, -0.5f, 0.5f),
+        new Vector3 (-0.5f, -0.5f, -0.5f),
+        new Vector3 (-0.5f, -0.5f, 0.5f),
+        new Vector3 (-0.5f, 0.5f, 0.5f),
+        new Vector3 (-0.5f, 0.5f, -0.5f),
+        new Vector3 (-0.5f, -0.5f, -0.5f),
+        new Vector3 (0.5f, -0.5f, -0.5f),
+        new Vector3 (0.5f, 0.5f, -0.5f),
+        new Vector3 (0.5f, 0.5f, 0.5f),
+        new Vector3 (0.5f, -0.5f, 0.5f)
         };
 
         int[] triangles = {
-        0, 2, 1, //z-neg
-		0, 3, 2,
-        2, 3, 4, //y-pos
-		2, 4, 5,
-        1, 2, 5, //x-pos
-		1, 5, 6,
-        0, 7, 4, //x-neg
-		0, 4, 3,
-        5, 4, 7, //z-pos
-		5, 7, 6,
-        0, 6, 7, //y-neg
-		0, 1, 6
+        //triangle 0
+        0, 2, 3,
+        //triangle 1
+		0, 3, 1,
+        //2
+        8, 4, 5,
+        //3
+		8, 5, 9,
+        //4
+        10, 6, 7,
+		//5
+        10, 7, 11,
+        //6
+        12, 13, 14, 
+        //7
+		12, 14, 15,
+        //8
+        16, 17, 18,
+        //9
+		16, 18, 19,
+        //10
+        20, 21, 22,
+        //11
+		20, 22, 23
+        };
+
+        Color[] faceColors =
+        {
+            Color.black,
+            Color.black,
+            Color.black,
+            Color.black,
+            Color.yellow,
+            Color.yellow,
+            Color.yellow,
+            Color.yellow,
+            Color.yellow,
+            Color.yellow,
+            Color.white,
+            Color.white,
+            Color.gray,
+            Color.gray,
+            Color.gray,
+            Color.gray,
+            Color.magenta,
+            Color.magenta,
+            Color.magenta,
+            Color.magenta,
+            Color.cyan,
+            Color.cyan,
+            Color.cyan,
+            Color.cyan
+
         };
 
         Mesh mesh = GetComponent<MeshFilter>().mesh;
@@ -85,9 +100,13 @@ public class CreateCube : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
 
+        mesh.RecalculateNormals();
+
+        mesh.SetColors(faceColors);
+
         mesh.RecalculateBounds();
 
-        mesh.RecalculateNormals();
+        mesh.Optimize();
     }
 
     private void Start()
@@ -95,6 +114,13 @@ public class CreateCube : MonoBehaviour
 
         MakeCube();
 
+        GetComponent<MeshRenderer>().material = material;
+
+    }
+
+    private void Update()
+    {
+        GetComponent<MeshRenderer>().material = material;
     }
 
 }

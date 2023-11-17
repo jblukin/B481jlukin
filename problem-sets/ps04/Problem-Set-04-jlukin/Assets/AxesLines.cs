@@ -14,171 +14,183 @@ public class AxesLines : MonoBehaviour
     {
         
         //Unit Lines -- X Axis
-        for (int x = 1; x <= 10; x++) 
+        for (int x = -10; x <= 10; x++) 
         {
+            if (x != 0)
+            {
+                GameObject go = new GameObject();
 
-            GameObject go = new GameObject();
+                LineRenderer line = go.AddComponent<LineRenderer>();
 
-            LineRenderer line = go.AddComponent<LineRenderer>();
+                line.startWidth = 0.1f;
 
-            line.startWidth = 0.1f;
+                line.endWidth = 0.1f;
 
-            line.endWidth = 0.1f;
+                line.SetPosition(0, new(x, 0, 0));
 
-            line.SetPosition(0, new(x, 0, 0));
+                line.SetPosition(1, new(x, 1, 0));
 
-            line.SetPosition(1, new(x, 1, 0));
+                line.startColor = Color.red;
 
-            line.startColor = Color.red;
+                line.endColor = Color.red;
 
-            line.endColor = Color.red;
+                line.material = lineMaterial;
 
-            line.material = lineMaterial;
+                Instantiate(go, xAxis);
 
-            Instantiate(go, xAxis);
-
-            Destroy(go);
+                Destroy(go);
+            }
 
         }
 
-        for (int x = 1; x <= 10; x++)
+        for (int x = -10; x <= 10; x++)
         {
+            if (x != 0)
+            {
+                GameObject go = new GameObject();
 
-            GameObject go = new GameObject();
+                LineRenderer line = go.AddComponent<LineRenderer>();
 
-            LineRenderer line = go.AddComponent<LineRenderer>();
+                line.startWidth = 0.1f;
 
-            line.startWidth = 0.1f;
+                line.endWidth = 0.1f;
 
-            line.endWidth = 0.1f;
+                line.SetPosition(0, new(x, 0, 0));
 
-            line.SetPosition(0, new(x, 0, 0));
+                line.SetPosition(1, new(x, 0, 1));
 
-            line.SetPosition(1, new(x, 0, 1));
+                line.startColor = Color.red;
 
-            line.startColor = Color.red;
+                line.endColor = Color.red;
 
-            line.endColor = Color.red;
+                line.material = lineMaterial;
 
-            line.material = lineMaterial;
+                Instantiate(go, xAxis);
 
-            Instantiate(go, xAxis);
-
-            Destroy(go);
+                Destroy(go);
+            }
 
         }
         //
 
 
         //Unit Lines -- Y Axis
-        for (int y = 1; y <= 10; y++)
+        for (int y = -10; y <= 10; y++)
         {
+            if (y != 0)
+            {
+                GameObject go = new GameObject();
 
-            GameObject go = new GameObject();
+                LineRenderer line = go.AddComponent<LineRenderer>();
 
-            LineRenderer line = go.AddComponent<LineRenderer>();
+                line.startWidth = 0.1f;
 
-            line.startWidth = 0.1f;
+                line.endWidth = 0.1f;
 
-            line.endWidth = 0.1f;
+                line.SetPosition(0, new(0, y, 0));
 
-            line.SetPosition(0, new(0, y, 0));
+                line.SetPosition(1, new(1, y, 0));
 
-            line.SetPosition(1, new(1, y, 0));
+                line.startColor = Color.green;
 
-            line.startColor = Color.green;
+                line.endColor = Color.green;
 
-            line.endColor = Color.green;
+                line.material = lineMaterial;
 
-            line.material = lineMaterial;
+                Instantiate(go, yAxis);
 
-            Instantiate(go, yAxis);
-
-            Destroy(go);
+                Destroy(go);
+            }
 
         }
 
-        for (int y = 1; y <= 10; y++)
+        for (int y = -10; y <= 10; y++)
         {
+            if (y != 0)
+            {
+                GameObject go = new GameObject();
 
-            GameObject go = new GameObject();
+                LineRenderer line = go.AddComponent<LineRenderer>();
 
-            LineRenderer line = go.AddComponent<LineRenderer>();
+                line.startWidth = 0.1f;
 
-            line.startWidth = 0.1f;
+                line.endWidth = 0.1f;
 
-            line.endWidth = 0.1f;
+                line.SetPosition(0, new(0, y, 0));
 
-            line.SetPosition(0, new(0, y, 0));
+                line.SetPosition(1, new(0, y, 1));
 
-            line.SetPosition(1, new(0, y, 1));
+                line.startColor = Color.green;
 
-            line.startColor = Color.green;
+                line.endColor = Color.green;
 
-            line.endColor = Color.green;
+                line.material = lineMaterial;
 
-            line.material = lineMaterial;
+                Instantiate(go, yAxis);
 
-            Instantiate(go, yAxis);
-
-            Destroy(go);
+                Destroy(go);
+            }
 
         }
         //
 
 
         //Unit Lines -- Z Axis
-        for (int z = 1; z <= 10; z++)
+        for (int z = -10; z <= 10; z++)
         {
+            if (z != 0)
+            {
+                GameObject go = new GameObject();
 
-            GameObject go = new GameObject();
+                LineRenderer line = go.AddComponent<LineRenderer>();
 
-            LineRenderer line = go.AddComponent<LineRenderer>();
+                line.startWidth = 0.1f;
 
-            line.startWidth = 0.1f;
+                line.endWidth = 0.1f;
 
-            line.endWidth = 0.1f;
+                line.SetPosition(0, new(0, 0, z));
 
-            line.SetPosition(0, new(0, 0, z));
+                line.SetPosition(1, new(1, 0, z));
 
-            line.SetPosition(1, new(1, 0, z));
+                line.startColor = Color.blue;
 
-            line.startColor = Color.blue;
+                line.endColor = Color.blue;
 
-            line.endColor = Color.blue;
+                line.material = lineMaterial;
 
-            line.material = lineMaterial;
+                Instantiate(go, zAxis);
 
-            Instantiate(go, zAxis);
-
-            Destroy(go);
+                Destroy(go);
+            }
 
         }
 
-        for (int z = 1; z <= 10; z++)
+        for (int z = -10; z <= 10; z++)
         {
+            if (z != 0)
+            {
+                GameObject go = new GameObject();
 
-            GameObject go = new GameObject();
+                LineRenderer line = go.AddComponent<LineRenderer>();
 
-            LineRenderer line = go.AddComponent<LineRenderer>();
+                line.startWidth = 0.1f;
 
-            line.startWidth = 0.1f;
+                line.endWidth = 0.1f;
 
-            line.endWidth = 0.1f;
+                line.SetPosition(0, new(0, 0, z));
 
-            line.SetPosition(0, new(0, 0, z));
+                line.SetPosition(1, new(0, 1, z));
 
-            line.SetPosition(1, new(0, 1, z));
+                line.startColor = Color.blue;
 
-            line.startColor = Color.blue;
+                line.endColor = Color.blue;
 
-            line.endColor = Color.blue;
+                line.material = lineMaterial;
 
-            line.material = lineMaterial;
+                Instantiate(go, zAxis);
 
-            Instantiate(go, zAxis);
-
-            Destroy(go);
+                Destroy(go);
+            }
 
         }
         //

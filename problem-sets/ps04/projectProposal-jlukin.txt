@@ -1,0 +1,33 @@
+B481 / Fall 2023 / jlukin
+
+Realistic Clear Still Water with Depth lighting and specularity
+
+A) Terrain with mapping of mountain texture vs beach texture based on height generated algorithmically
+
+	Water done by shader
+	
+	Lighting specularity and depth buffer done by shader
+
+B) Raise Height of water with mouse drag
+    
+   Move a light source with mouse drag
+   
+   Can switch between operations
+   
+
+C) Free move camera
+
+   Auto rotate camera
+   
+   Can switch between modes
+
+
+D) Two lights with distinct diffuse and specular properties
+
+   Both can be turned off independently 
+   One can be moved using mouse drag 
+   The other rotates around the terrain automatically
+   
+E) See part A
+
+I can't think of more details since I'm not even sure how I would implement this project.
