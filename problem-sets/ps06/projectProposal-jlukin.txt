@@ -1,0 +1,40 @@
+B481 / Fall 2023 / jlukin
+
+UPDATED FINAL PROJECT CHANGES
+
+Wavy Terrain with a texture map plane follwing the camera and a spinnable cube in the middle
+
+A) Terrain with bump mapping based on height generated algorithmically
+
+	Cube algorithmically generated
+
+
+B) Move a point light with mouse drag
+    
+   Rotate a Cube with mouse drag
+   
+   Both Operations always active w/ different controls
+   
+
+C) Free move camera
+
+   Auto rotate camera
+   
+   Can switch between modes
+
+
+D) Two lights with distinct diffuse and specular properties
+
+   Both can be turned off independently 
+   
+   One can be moved using mouse drag 
+   
+   The other rotates around the terrain automatically
+   
+E) Bump map for terrain
+
+   Bump map algorithmically generated in GPU
+   
+   Texture map for plane following camera
+   
+   Texture algorithmically generated
